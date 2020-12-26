@@ -7,7 +7,7 @@ import (
 	"os"
 	"text/template"
 
-	"github.com/kennetheversole/gotworth/cmd/finance-terminal/backend"
+	"finance-terminal/backend"
 )
 
 func main() {
