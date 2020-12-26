@@ -1,3 +1,3 @@
-module github.com/kennetheversole/networth_tracker
+module github.com/kennetheversole/gotworth
 
 go 1.13
