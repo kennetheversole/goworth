@@ -7,12 +7,13 @@ import (
 	"log"
 	"os"
 	"strconv"
+	"time"
 )
 
 func csvWriter(date string, assets string, debts string, delta string) {
 
 	// Open the file
-	recordFile, err := os.OpenFile("finances.csv", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
+	recordFile, err := os.OpenFile("./finances.csv", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
 	if err != nil {
 		fmt.Println("An error encountered ::", err)
 	}
@@ -33,16 +34,21 @@ func csvWriter(date string, assets string, debts string, delta string) {
 }
 
 func main() {
-	fmt.Println("Network Tracker")
+	fmt.Println("===============")
+	fmt.Println("Networth Tracker")
+	fmt.Println("===============")
 
+	//Set time for data points
+	now := time.Now()
+	today := fmt.Sprintf("%02d/%02d/%d",
+		now.Day(), now.Month(), now.Year())
+
+	//Get input from user for assets and debts
 	scanner := bufio.NewScanner(os.Stdin)
-	fmt.Print("Please enter  today's date [mm/dd/yyyy]: ")
-	scanner.Scan()
-	date := scanner.Text()
-	fmt.Print("Please enter asset value as of that date: ")
+	fmt.Printf("\nPlease enter asset value as of %v: ", today)
 	scanner.Scan()
 	assets := scanner.Text()
-	fmt.Print("Please enter debt value as of that date: ")
+	fmt.Printf("\nPlease enter debt value as of %v: ", today)
 	scanner.Scan()
 	debts := scanner.Text()
 	if err := scanner.Err(); err != nil {
@@ -58,9 +64,8 @@ func main() {
 		fmt.Println("An error encountered ::", err)
 	}
 
-	deltaFLT64 := assetsFLT64 - debtFLT64
-	delta := fmt.Sprintf("%f", deltaFLT64)
+	delta := fmt.Sprintf("%.2f", assetsFLT64-debtFLT64)
 
-	csvWriter(date, assets, debts, delta)
+	csvWriter(today, assets, debts, delta)
 
 }
