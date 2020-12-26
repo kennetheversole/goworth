@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"encoding/csv"
 	"fmt"
-	"log"
 	"os"
 	"strconv"
 	"time"
@@ -52,7 +51,8 @@ func main() {
 	scanner.Scan()
 	debts := scanner.Text()
 	if err := scanner.Err(); err != nil {
-		log.Println(err)
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
 	}
 	assetsFLT64, err := strconv.ParseFloat(assets, 64)
 	if err != nil {
