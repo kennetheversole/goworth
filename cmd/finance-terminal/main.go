@@ -10,12 +10,13 @@ import (
 	"time"
 )
 
-func csvWriter(date string, assets string, debts string, delta string) {
+func writeToCSV(date string, assets string, debts string, delta string) {
 
 	// Open the file
 	recordFile, err := os.OpenFile("./finances.csv", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
 	if err != nil {
-		fmt.Println("An error encountered ::", err)
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
 	}
 
 	// Initialize the writer
@@ -26,9 +27,10 @@ func csvWriter(date string, assets string, debts string, delta string) {
 		{date, assets, debts, delta},
 	}
 
-	err = writer.WriteAll(csvData) // returns error
+	err = writer.WriteAll(csvData)
 	if err != nil {
-		fmt.Println("An error encountered ::", err)
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
 	}
 
 }
@@ -38,12 +40,10 @@ func main() {
 	fmt.Println("Networth Tracker")
 	fmt.Println("===============")
 
-	//Set time for data points
 	now := time.Now()
 	today := fmt.Sprintf("%02d/%02d/%d",
 		now.Day(), now.Month(), now.Year())
 
-	//Get input from user for assets and debts
 	scanner := bufio.NewScanner(os.Stdin)
 	fmt.Printf("\nPlease enter asset value as of %v: ", today)
 	scanner.Scan()
@@ -56,16 +56,18 @@ func main() {
 	}
 	assetsFLT64, err := strconv.ParseFloat(assets, 64)
 	if err != nil {
-		fmt.Println("An error encountered ::", err)
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
 	}
 
 	debtFLT64, err := strconv.ParseFloat(debts, 64)
 	if err != nil {
-		fmt.Println("An error encountered ::", err)
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
 	}
 
 	delta := fmt.Sprintf("%.2f", assetsFLT64-debtFLT64)
 
-	csvWriter(today, assets, debts, delta)
+	writeToCSV(today, assets, debts, delta)
 
 }
