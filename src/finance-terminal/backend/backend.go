@@ -11,7 +11,7 @@ import (
 func WriteToCSV(date string, assets string, debts string, delta string) {
 
 	// Open the file
-	recordFile, err := os.OpenFile("./finances.csv", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
+	recordFile, err := os.OpenFile("./frontend/finances.csv", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
@@ -35,7 +35,7 @@ func WriteToCSV(date string, assets string, debts string, delta string) {
 
 func Terminal(assets string, debts string) {
 
-	today := time.Now().Format("06-01-02")
+	today := time.Now().Format("02/01/2006")
 	assetsFLT64, err := strconv.ParseFloat(assets, 64)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
