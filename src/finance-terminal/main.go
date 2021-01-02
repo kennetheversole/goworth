@@ -13,8 +13,8 @@ import (
 func main() {
 	httpPort := 8081
 	log.Printf("Starting Server on port %v\n", httpPort)
-	http.HandleFunc("/", formHandler)
-	http.Handle("/graph/", http.StripPrefix("/graph/", http.FileServer(http.Dir("./frontend"))))
+	http.HandleFunc("/input", inputHandler)
+	http.Handle("/", http.StripPrefix("/", http.FileServer(http.Dir("./frontend"))))
 	err := http.ListenAndServe(fmt.Sprintf(":%d", httpPort), nil)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
@@ -22,7 +22,7 @@ func main() {
 	}
 }
 
-func formHandler(w http.ResponseWriter, r *http.Request) {
+func inputHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("method:", r.Method) //get request method
 	if r.Method == "GET" {
 		t, _ := template.ParseFiles("./frontend/form.html")
